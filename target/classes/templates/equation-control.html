@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Equation Control</title>
+  <style>
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: green;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+    }
+
+    thead {
+      background-color: lightgreen;
+    }
+
+    .check-btn {
+      background-color: green;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<h1>Equation Control</h1>
+<p>
+
+</p>
+<h2>Проверьте Ваши знания!</h2>
+<p>
+
+</p>
+<h3>Обратите внимание, что вводить ответ нужно в формате "x = Ваш ответ". Приложение принимает в качестве ответа целые числа и десятичные дроби с точкой в качестве разделителя. После нажатия кнопи "Проверить", будут показаны правильные ответы и Ваш результат по пятибльной шкале. Удачи!</h3>
+<form th:action="@{/equationControl/checkAnswer}" method="post">
+  <table>
+    <tr>
+      <th>Equation</th>
+      <th>Answer</th>
+      <th>Result</th>
+    </tr>
+    <tr th:each="equation, status : ${equations}">
+      <input type="hidden" name="equationId" th:value="${equation.id}">
+      <td th:text="${equation.equationBody}"></td>
+      <td>
+        <input type="text" name="answer" placeholder="Введите ответ в формате x = число">
+      </td>
+      <td>
+        <input type="hidden" name="equationResult" th:value="${equation.equationResult}">
+        <span id="result" th:id="'result-' + ${status.index}"></span>
+      </td>
+    </tr>
+  </table>
+
+  <button type="button" onclick="calculateScore()" class="check-btn">Проверить</button>
+  <div id="score"></div>
+</form>
+
+<script>
+  function calculateScore() {
+    var score = 0;
+    var inputs = document.getElementsByName("answer");
+    var equationResults = document.getElementsByName("equationResult");
+
+    for (var i = 0; i < inputs.length; i++) {
+      if (inputs[i].value.trim() === equationResults[i].value.trim()) {
+        score++;
+        var resultCell = document.getElementById("result-" + i);
+        resultCell.innerHTML = "<span>Верно!</span>";
+      } else {
+        var resultCell = document.getElementById("result-" + i);
+        resultCell.innerHTML = "<span>Вы ошиблись</span>";
+      }
+
+      equationResults[i].type = "text";
+    }
+
+    document.getElementById("score").innerHTML = "Ваш балл - " + score + " баллов.";
+  }
+</script>
+<p>
+
+</p>
+
+<a href="/" class="btn">Back to main</a>
+
+</body>
+</html>

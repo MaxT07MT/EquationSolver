@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Equation Solver</title>
+  <style>
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: green;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+<h1>Уравнение</h1>
+<form action="/equationSolver/solveEquation" method="post">
+  <label for="equation">Введите уравнение:</label>
+  <input type="text" name="equation" th:value="${equation}">
+  <button type="submit" class="btn">Go!</button>
+</form>
+
+<p th:text="${error}" style="color: red;"></p>
+<p th:text="${result}"></p>
+
+<!--  проверка чтобы отображать кнопку сохранения только после получения решения  -->
+<div th:if="${showSaveButton}">
+  <form method="post" action="/equation/saveEquation">
+    <div>
+      <label for="equation">Уравнение:</label>
+      <input type="text" id="equation" name="equation" th:value="${equation}">
+    </div>
+    <div>
+      <label for="result">Результат:</label>
+      <input type="text" id="result" name="result" th:value="${result}">
+    </div>
+    <button type="submit" class="btn">Сохранить</button>
+  </form>
+</div>
+
+<a href="/" class="btn">Back to main</a>
+
+</body>
+</html>

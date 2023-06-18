@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Equation Solver</title>
+  <style>
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: green;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+    }
+
+    thead {
+      background-color: lightgreen;
+    }
+  </style>
+</head>
+<body>
+
+<table>
+  <thead>
+  <tr>
+    <th>Уравнение</th>
+    <th>Результат</th>
+    <th>Действия</th>
+  </tr>
+  </thead>
+  <tbody>
+
+  <tr th:each="equation : ${equation}">
+    <td th:text="${equation.equationBody}"></td>
+    <td th:text="${equation.equationResult}"></td>
+    <td>
+      <a th:href="@{/equation/{id}(id=${equation.id})}" class="btn">Info</a>
+      <form th:action="@{/equation/deleteEquation}" method="post" style="display: inline;">
+        <input type="hidden" name="equationId" th:value="${equation.id}">
+        <button type="submit" class="btn">Delete</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<a href="/" class="btn">Back to main</a>
+</body>
+</html>
